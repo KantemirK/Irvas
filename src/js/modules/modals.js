@@ -14,7 +14,7 @@ const closeModal = (modalSelector) => {
     document.body.style.overflow = ''; 
 };
 
-const timerId = 1;
+let timerId = 0;
 
 const showModalByTime = (modalSelector, time) => {
     timerId = setTimeout(() => openModal(modalSelector), time);
