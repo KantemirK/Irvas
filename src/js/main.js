@@ -2,6 +2,7 @@ import tabs from "./modules/tabs";
 import "./slider";
 import modal from "./modules/modals";
 import {showModalByTime} from "./modules/modals";
+import forms from "./modules/forms";
 
 document.addEventListener('DOMContentLoaded', () => {
     tabs(".glazing_slider", ".glazing_block", ".glazing_content", "active");
@@ -9,5 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showModalByTime(".popup", 5000);
     modal(".popup_engineer", ".popup_engineer_btn");
     modal(".popup", ".phone_link");
+    forms('form', 'input[name="user_phone"]');
 }); 
 
