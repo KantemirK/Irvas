@@ -17936,12 +17936,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])(".glazing_slider", ".glazing_block", ".glazing_content", "active");
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])(".decoration_slider", ".no_click", ".decoration_content > div > div", "after_click");
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_2__["showModalByTime"])(".popup", 5000);
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_2__["default"])(".popup_engineer", ".popup_engineer_btn");
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_2__["default"])(".popup", ".phone_link");
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])('form', 'input[name="user_phone"]');
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])("form", ".popup", "input[name='user_phone']");
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])("form", ".popup_engineer", 'input[name="user_phone"]');
 });
 
 /***/ }),
@@ -17966,6 +17969,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/services */ "./src/js/services/services.js");
+/* harmony import */ var _modals__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modals */ "./src/js/modules/modals.js");
 
 
 
@@ -17973,10 +17977,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var forms = function forms(formSelector, phoneInputsAttribute) {
+
+var forms = function forms(formSelector, headerSelector, phoneInputsAttribute) {
   var forms = document.querySelectorAll(formSelector),
       phoneInputs = document.querySelectorAll(phoneInputsAttribute);
   phoneInputs.forEach(function (phoneInput) {
+    //ввод только цифр в форму номера телефона
     phoneInput.addEventListener('input', function () {
       phoneInput.value = phoneInput.value.replace(/\D/, "");
     });
@@ -17997,30 +18003,36 @@ var forms = function forms(formSelector, phoneInputsAttribute) {
         if (/\//.test(message)) {
           //test - возвращает bool значение
           element.src = message;
+          element.style.cssText = "\n                        display: block;\n                        margin: 20px auto 30px auto;\n                    ";
+          form.firstElementChild.classList.add('hide');
+          form.firstElementChild.classList.remove('show');
         } else {
           element.textContent = message;
         }
 
-        element.style.cssText = "\n                    display: block;\n                    margin: 0 auto;\n                ";
         form.insertAdjacentElement('afterbegin', element);
       };
 
       statusMessage('img', message.loading);
+
+      var dynamicStatusMessage = function dynamicStatusMessage(tagStatusMessage, message) {
+        form.firstElementChild.remove();
+        statusMessage(tagStatusMessage, message);
+        setTimeout(function () {
+          Object(_modals__WEBPACK_IMPORTED_MODULE_6__["closeModal"])(headerSelector);
+          form.firstElementChild.remove();
+          form.firstElementChild.classList.remove('hide');
+          form.firstElementChild.classList.add('show');
+        }, 5000);
+      };
+
       var formData = new FormData(form); //const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
       Object(_services_services__WEBPACK_IMPORTED_MODULE_5__["default"])('assets/server.php', formData).then(function (data) {
         console.log(data);
-        form.firstChild.remove();
-        statusMessage('div', message.success);
-        setTimeout(function () {
-          return form.firstChild.remove();
-        }, 3000);
+        dynamicStatusMessage('h2', message.success);
       }).catch(function () {
-        form.firstChild.remove();
-        statusMessage('div', message.failure);
-        setTimeout(function () {
-          return form.firstChild.remove();
-        }, 3000);
+        return dynamicStatusMessage('h2', message.failure);
       }).finally(function () {
         return form.reset();
       });
