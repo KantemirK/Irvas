@@ -1,16 +1,14 @@
 import postData from "../services/services";
-import {closeModal} from "./modals";
+import {closeAllModal} from "./modals";
+import checkNumInput from "./checkNumInput";
+import checkNameInput from "./checkNameInput";
 
-const forms = (formSelector, headerSelector, phoneInputsAttribute) => { 
-    const forms = document.querySelectorAll(formSelector),
-          phoneInputs = document.querySelectorAll(phoneInputsAttribute);
+const forms = (formSelector, headerSelector, phoneInputsAttribute, nameInputsAttribute, modalState) => { 
+    const forms = document.querySelectorAll(formSelector);
+    
+    checkNumInput(phoneInputsAttribute);
+    checkNameInput(nameInputsAttribute);
 
-    phoneInputs.forEach(phoneInput => { //ввод только цифр в форму номера телефона
-        phoneInput.addEventListener('input', () => {
-            phoneInput.value = phoneInput.value.replace(/\D/, "");
-        });
-    });
-          
     const message = {
         loading: 'assets/img/form/spinner/ball-triangle.svg',
         success: 'Спасибо! Скоро мы с вами свяжемся',
@@ -45,7 +43,7 @@ const forms = (formSelector, headerSelector, phoneInputsAttribute) => {
                 form.firstElementChild.remove();
                 statusMessage(tagStatusMessage, message);
                 setTimeout(() => {
-                    closeModal(headerSelector);
+                    closeAllModal(headerSelector);
 
                     form.firstElementChild.remove();
                     form.firstElementChild.classList.remove('hide');
@@ -54,6 +52,12 @@ const forms = (formSelector, headerSelector, phoneInputsAttribute) => {
             };
 
             const formData = new FormData(form);
+
+            if (form.getAttribute("data-calc") === "end") { //если у формы есть атрибут ..., то добавим ещё данных
+                for (let key in modalState) {
+                    formData.append(key, modalState[key]);
+                }
+            }
             //const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
             postData('assets/server.php', formData)
