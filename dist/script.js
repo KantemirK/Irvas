@@ -19059,6 +19059,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+
 
 
 
@@ -19080,6 +19082,7 @@ document.addEventListener('DOMContentLoaded', function () {
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_2__["default"])(".popup_calc_profile", ".popup_calc_button", "[data-modal]", false);
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_2__["default"])(".popup_calc_end", ".popup_calc_profile_button", "[data-modal]", false);
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])("form", "[data-modal]", "input[name='user_phone']", "input[name='user_name']", modalState);
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])("#timer", "2022-08-11T10:15:00");
 });
 
 /***/ }),
@@ -19529,6 +19532,73 @@ var tabs = function tabs(parentSelector, tabsSelector, tabContentsSelector, acti
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (tabs);
+
+/***/ }),
+
+/***/ "./src/js/modules/timer.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/timer.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var timer = function timer(id, deadline) {
+  var getTimeRemaining = function getTimeRemaining(endtime) {
+    var t = Date.parse(endtime) - Date.parse(new Date()),
+        days = Math.floor(t / (1000 * 60 * 60 * 24)),
+        hours = Math.floor(t / (1000 * 60 * 60) % 24),
+        minutes = Math.floor(t / (1000 * 60) % 60),
+        seconds = Math.floor(t / 1000 % 60);
+    return {
+      'total': t,
+      'days': days,
+      'hours': hours,
+      'minutes': minutes,
+      'seconds': seconds
+    };
+  };
+
+  var addZero = function addZero(num) {
+    if (num >= 0 && num < 10) {
+      return "0".concat(num);
+    } else {
+      return num;
+    }
+  };
+
+  var setClock = function setClock(selector, endtime) {
+    var timer = document.querySelector(selector),
+        day = timer.querySelector('#days'),
+        hour = timer.querySelector('#hours'),
+        minute = timer.querySelector('#minutes'),
+        second = timer.querySelector('#seconds');
+
+    var updateClock = function updateClock() {
+      var timeRemaining = getTimeRemaining(endtime);
+      day.innerHTML = addZero(timeRemaining.days);
+      hour.innerHTML = addZero(timeRemaining.hours);
+      minute.innerHTML = addZero(timeRemaining.minutes);
+      second.innerHTML = addZero(timeRemaining.seconds);
+
+      if (timeRemaining.total <= 0) {
+        clearInterval(timeInterval);
+        day.innerHTML = '00';
+        hour.innerHTML = '00';
+        minute.innerHTML = '00';
+        second.innerHTML = '00';
+      }
+    };
+
+    var timeInterval = setInterval(updateClock, 1000);
+    updateClock();
+  };
+
+  setClock(id, deadline);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (timer);
 
 /***/ }),
 

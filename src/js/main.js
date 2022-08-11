@@ -4,6 +4,7 @@ import modal from "./modules/modals";
 import {showModalByTime} from "./modules/modals";
 import forms from "./modules/forms";
 import changeModalState from "./modules/changeModalState";
+import timer from "./modules/timer";
 
 const modalState = {};
 
@@ -21,5 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     modal(".popup_calc_profile", ".popup_calc_button", "[data-modal]", false);
     modal(".popup_calc_end", ".popup_calc_profile_button", "[data-modal]", false);
     forms("form", "[data-modal]", "input[name='user_phone']", "input[name='user_name']", modalState);
+    timer("#timer", "2022-08-11T10:15:00");
 }); 
 
