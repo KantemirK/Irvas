@@ -19060,6 +19060,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
 /* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_images__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/images */ "./src/js/modules/images.js");
+
 
 
 
@@ -19083,6 +19085,7 @@ document.addEventListener('DOMContentLoaded', function () {
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_2__["default"])(".popup_calc_end", ".popup_calc_profile_button", "[data-modal]", false);
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])("form", "[data-modal]", "input[name='user_phone']", "input[name='user_name']", modalState);
   Object(_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])("#timer", "2022-08-11T10:15:00");
+  Object(_modules_images__WEBPACK_IMPORTED_MODULE_6__["default"])();
 });
 
 /***/ }),
@@ -19402,6 +19405,45 @@ var forms = function forms(formSelector, headerSelector, phoneInputsAttribute, n
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (forms);
+
+/***/ }),
+
+/***/ "./src/js/modules/images.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/images.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var images = function images() {
+  var works = document.querySelector('.works'),
+      imgPopup = document.createElement('div'),
+      bigImage = document.createElement('img');
+  imgPopup.style.cssText = "\n        justify-content: center; \n        align-items: center; \n        display: none; \n    ";
+  works.append(imgPopup);
+  bigImage.style.cssText = "\n        max-height: 70%;\n        max-width: 90%;\n    ";
+  imgPopup.append(bigImage);
+  works.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    if (e.target && e.target.matches('img.preview')) {
+      bigImage.src = e.target.parentElement.getAttribute('href');
+      imgPopup.style.display = 'flex';
+      imgPopup.classList.add('popup');
+      document.body.style.overflow = 'hidden';
+    }
+
+    if (e.target && e.target.matches('div.popup')) {
+      imgPopup.style.display = 'none';
+      imgPopup.classList.remove('popup');
+      document.body.style.overflow = '';
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (images);
 
 /***/ }),
 
